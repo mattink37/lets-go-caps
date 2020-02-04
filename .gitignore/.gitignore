@@ -11,6 +11,9 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.testlog
+*.manifest
+*.cache
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -372,6 +375,7 @@ StyleCopReport.xml
 # Uncomment if necessary however generally it will be regenerated when needed
 #!**/[Pp]ackages/repositories.config
 # NuGet v3's project.json files produces more ignorable files
+*.json
 
 # Microsoft Azure Build Output
 
