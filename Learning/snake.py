@@ -1,95 +1,66 @@
-from graphics import *
-from time import time
 from random import randint
 import pygame
-
-from pygame.locals import (
-    K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT,
-    K_ESCAPE,
-    KEYDOWN,
-    QUIT,
-)
-
-pygame.init()
+from pygame import (Rect)
+from sys import exit
+from pygame.locals import (K_DOWN, K_ESCAPE, K_LEFT, K_RIGHT, K_UP, KEYDOWN, QUIT)
 
 class GameLogic:
 
-    def __init__(self, window, windowSizeX=250, windowSizeY=250):
-        self.window = window
-        self.windowSizeX = windowSizeX
-        self.windowSizeY = windowSizeY
+    def __init__(self, windowSizeX=250, windowSizeY=250):
+        self.window = pygame.display.set_mode([windowSizeX, windowSizeY])
+        pygame.display.set_caption("Snake!")
+        self.window.fill((0, 0, 0))
+        self.gameUnitSize = 15
         self.snake = self.createSnake()
         self.food = self.createFood()
-        self.speed = 5
+        self.speed = 15
         self._gameLoop()
 
     def createFood(self):
-        foodOriginX = randint(0, self.windowSizeX)
-        foodOriginY = randint(0, self.windowSizeY)
-        foodSize = 15
-        foodOrigin = Point(foodOriginX, foodOriginY)
-        foodEnd = Point(foodOriginX + foodSize, foodOriginY + foodSize)
-        foodRectangle = Rectangle(foodOrigin, foodEnd)
-        foodRectangle.setFill('white')
-        foodRectangle.draw(self.window)
+        foodX = randint(0, self.window.get_width() - self.gameUnitSize)
+        foodY = randint(0, self.window.get_height() - self.gameUnitSize)
+        foodRectangle = Rect((foodX, foodY), (self.gameUnitSize, self.gameUnitSize))
         return foodRectangle
 
     def createSnake(self):
-        snakeOriginX = randint(0, self.windowSizeX)
-        snakeOriginY = randint(0, self.windowSizeY)
-        snakeSize = 15
-        snakeOrigin = Point(snakeOriginX, snakeOriginY)
-        snakeEnd = Point(snakeOriginX + snakeSize, snakeOriginY + snakeSize)
-        snakeRectangle = Rectangle(snakeOrigin, snakeEnd)
-        snakeRectangle.setFill('white')
-        snakeRectangle.draw(self.window)
-        return snakeRectangle
-    # def appendSnake():
+        snakeNodeX = randint(0, self.window.get_width())
+        snakeNodeY = randint(0, self.window.get_height())
+        snakeNodeRectangle = Rect((snakeNodeX, snakeNodeY), (self.gameUnitSize, self.gameUnitSize))
+        return snakeNodeRectangle
+    def appendSnake(self):
+        # add node to tail
+        blah = 0
     def moveSnake(self, dx, dy):
-        self.snake.move(dx * self.speed, dy * self.speed)
+        self.snake.x += dx * self.speed
+        self.snake.y += dy * self.speed
+        # self.snake.move(dx * self.speed, dy * self.speed)
     # def moveFood():
-    # def _update(self):
-        
-    # def _draw():
+    def _update(self):
+        self.window.fill((0,0,0))
+        pygame.draw.rect(self.window, (255, 255, 255), self.snake)
+        pygame.display.update()
+
     def _input(self):
-        running = True
         for event in pygame.event.get():
-            # Did the user hit a key?
             if event.type == KEYDOWN:
-                # Was it the Escape key? If so, stop the loop.
                 if event.key == K_ESCAPE:
-                    running = False
-                if event.key == K_LEFT:
-                    self.moveSnake(-1, 0)
-                if event.key == K_RIGHT:
-                    self.moveSnake(1, 0)
-                if event.key == K_UP:
-                    self.moveSnake(0, -1)
-                if event.key == K_DOWN:
-                    self.moveSnake(0, 1)
-            # Did the user click the window close button? If so, stop the loop.
-            elif event.type == QUIT:
-                running = False
-        return running
+                    exit()
+        keys = pygame.key.get_pressed()
+        if (keys[K_LEFT]):
+            self.moveSnake(-1, 0)
+        elif (keys[K_RIGHT]):
+            self.moveSnake(1, 0)
+        elif (keys[K_UP]):
+            self.moveSnake(0, -1)
+        elif (keys[K_DOWN]):
+            self.moveSnake(0, 1)
 
     def _gameLoop(self):
         while True:
-            if (self._input() == False):
-                break
-            # self._update()
-            # _draw()
+            pygame.time.delay(100)
+            self._input()
+            self._update()
 
 def main():
-    window = GraphWin("Snake!", 500, 500)
-
-    window.setBackground(color_rgb(0, 107, 169))
-
-    game = GameLogic(window)
-
-    window.getMouse()
-    window.close()
-
+    game = GameLogic(500, 500)
 main()
