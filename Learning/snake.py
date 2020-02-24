@@ -11,33 +11,59 @@ class GameLogic:
         pygame.display.set_caption("Snake!")
         self.window.fill((0, 0, 0))
         self.gameUnitSize = 15
-        self.snake = self.createSnake()
+        self.snake = [self.createSnake()]
         self.food = self.createFood()
         self.speed = 15
         self._gameLoop()
 
     def createFood(self):
+        # TODO
+        # Make food spawn where the snake isn't
         foodX = randint(0, self.window.get_width() - self.gameUnitSize)
+        if (foodX % self.gameUnitSize != 0):
+            foodX -= foodX % self.gameUnitSize
         foodY = randint(0, self.window.get_height() - self.gameUnitSize)
+        if (foodY % self.gameUnitSize != 0):
+            foodY -= foodY % self.gameUnitSize
         foodRectangle = Rect((foodX, foodY), (self.gameUnitSize, self.gameUnitSize))
         return foodRectangle
 
     def createSnake(self):
         snakeNodeX = randint(0, self.window.get_width())
+        if (snakeNodeX % self.gameUnitSize != 0):
+            snakeNodeX -= snakeNodeX % self.gameUnitSize
         snakeNodeY = randint(0, self.window.get_height())
+        if (snakeNodeY % self.gameUnitSize != 0):
+            snakeNodeY -= snakeNodeY % self.gameUnitSize
         snakeNodeRectangle = Rect((snakeNodeX, snakeNodeY), (self.gameUnitSize, self.gameUnitSize))
         return snakeNodeRectangle
+
     def appendSnake(self):
         # add node to tail
-        blah = 0
+        newSnakeLink = Rect((self.snake[len(self.snake) - 1].x, self.snake[len(self.snake) - 1].y), (self.gameUnitSize, self.gameUnitSize))
+        self.snake.append(newSnakeLink)
+
     def moveSnake(self, dx, dy):
-        self.snake.x += dx * self.speed
-        self.snake.y += dy * self.speed
-        # self.snake.move(dx * self.speed, dy * self.speed)
-    # def moveFood():
+        self.snake[len(self.snake) - 1].x = self.snake[0].x + dx * self.speed
+        self.snake[len(self.snake) - 1].y = self.snake[0].y + dy * self.speed
+        self.snake.insert(0, self.snake.pop())
+
+    def intersect(self):
+        if self.snake[0].x == self.food.x and self.snake[0].y == self.food.y:
+            return True
+
     def _update(self):
         self.window.fill((0,0,0))
-        pygame.draw.rect(self.window, (255, 255, 255), self.snake)
+        
+        if (self.intersect() == True):
+            self.appendSnake()
+            self.createFood()
+        # elif snake hits wall || snake hits snake
+            #killSnake
+
+        for link in self.snake:
+            pygame.draw.rect(self.window, (255, 255, 255), link)
+        pygame.draw.rect(self.window, (102, 255, 51), self.food)
         pygame.display.update()
 
     def _input(self):
