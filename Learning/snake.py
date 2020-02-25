@@ -102,7 +102,7 @@ class GameLogic:
             return True
 
     def snakeCollidingWithWall(self):
-        if self.snake[0].x >= self.windowSizeX and self.snake[0].x >= self.windowSizeY:
+        if self.snake[0].x >= self.windowSizeX or self.snake[0].x < 0 or self.snake[0].y >= self.windowSizeY or self.snake[0].y < 0:
             return True
         return False
 
@@ -143,13 +143,13 @@ class GameLogic:
                 if event.key == K_ESCAPE:
                     exit()
         keys = pygame.key.get_pressed()
-        if (keys[K_LEFT]):
+        if (keys[K_LEFT] and self.previousDirection != self.snakeDirections.get('right')):
             self.moveSnake(self.snakeDirections.get('left'))
-        elif (keys[K_RIGHT]):
+        elif (keys[K_RIGHT] and self.previousDirection != self.snakeDirections.get('left')):
             self.moveSnake(self.snakeDirections.get('right'))
-        elif (keys[K_UP]):
+        elif (keys[K_UP] and self.previousDirection != self.snakeDirections.get('down')):
             self.moveSnake(self.snakeDirections.get('up'))
-        elif (keys[K_DOWN]):
+        elif (keys[K_DOWN] and self.previousDirection != self.snakeDirections.get('up')):
             self.moveSnake(self.snakeDirections.get('down'))
         else:
             self.moveSnake(self.previousDirection)
@@ -199,4 +199,6 @@ class GameLogic:
 
 def main():
     game = GameLogic(500, 500)
+
+
 main()
