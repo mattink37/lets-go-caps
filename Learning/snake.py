@@ -200,16 +200,15 @@ class GameLogic:
 class LeaderBoard:
 
     def __init__(self):
-        file = open("C:\git\hmt\Learning\leaderboard.txt", "r")
+        import os.path
+        path = "C:\git\hmt\Learning\leaderboard.txt"
+        file_exists = os.path.isfile(path) 
         self.leaderboard = []
-        i = 0
-        while i < 5:
-            chunk = file.readline()
-            if (chunk == ''):
-                break
-            LeaderBoard.insert(0, chunk.splitlines())
-            i += 1
-        file.close()
+        if file_exists:
+            self.leaderboard = open(path, "r").readlines()
+        else:
+            newLeaderboard = open(path, "w")
+            newLeaderboard.close()
         self.leaderboard.reverse()
 
     @staticmethod
@@ -227,7 +226,7 @@ class LeaderBoard:
 
 def main():
     l = LeaderBoard()
-    game = GameLogic(500, 500)
+    game = GameLogic(300, 300)
 
 
 main()
