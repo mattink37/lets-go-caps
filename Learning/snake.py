@@ -24,7 +24,7 @@ class GameLogic:
         self.font = pygame.font.SysFont("bahnschrift", 20)
 
         self.text = self.font.render(
-            "Press any key to begin", True, (255, 255, 255))
+            "Press the arrow keys to begin", True, (255, 255, 255))
         self.startTextRect = self.text.get_rect(
             center=(windowSizeX/2, windowSizeY/2))
         self.snake = [self.startSnake()]
