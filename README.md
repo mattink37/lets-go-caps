@@ -1,4 +1,4 @@
-# hire-me-thx
+# lets-go-caps
 Repo for various personal projects and practice
 
 /learning/snake.py:
