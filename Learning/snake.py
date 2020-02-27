@@ -24,7 +24,7 @@ class GameLogic:
         self.font = pygame.font.SysFont("bahnschrift", 20)
 
         self.text = self.font.render(
-            "Press the arrow keys to begin", True, (255, 255, 255))
+            "Press any key to begin", True, (255, 255, 255))
         self.startTextRect = self.text.get_rect(
             center=(windowSizeX/2, windowSizeY/2))
         self.snake = [self.startSnake()]
@@ -200,15 +200,17 @@ class GameLogic:
 class LeaderBoard:
 
     def __init__(self):
-        import os.path
-        path = "C:\git\hmt\Learning\leaderboard.txt"
-        file_exists = os.path.isfile(path) 
+        # needs to be changed to relative path
+        file = open("C:\git\hmt\Learning\leaderboard.txt", "r")
         self.leaderboard = []
-        if file_exists:
-            self.leaderboard = open(path, "r").readlines()
-        else:
-            newLeaderboard = open(path, "w")
-            newLeaderboard.close()
+        i = 0
+        while i < 5:
+            chunk = file.readline()
+            if (chunk == ''):
+                break
+            LeaderBoard.insert(0, chunk.splitlines())
+            i += 1
+        file.close()
         self.leaderboard.reverse()
 
     @staticmethod
@@ -225,8 +227,8 @@ class LeaderBoard:
 
 
 def main():
-    l = LeaderBoard()
-    game = GameLogic(300, 300)
+    #l = LeaderBoard()
+    game = GameLogic(250, 250)
 
 
 main()
